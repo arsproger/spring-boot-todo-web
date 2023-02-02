@@ -1,8 +1,51 @@
 package com.arsen.controllers;
 
-import org.springframework.web.bind.annotation.RestController;
+import com.arsen.enams.TaskStatus;
+import com.arsen.models.Task;
+import com.arsen.models.User;
+import com.arsen.services.TaskService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
+@RequestMapping("/task")
 public class TaskController {
+    TaskService service;
 
+    @GetMapping("/{id}")
+    public Optional<Task> getTaskById(@PathVariable Long id) {
+        return service.getById(id);
+    }
+
+    @GetMapping("/all")
+    public List<Task> getAllTask() {
+        return service.getAllTask();
+    }
+
+    @PostMapping("/save")
+    public Long saveTask(@RequestParam User user,
+                         @RequestParam String header,
+                         @RequestParam String description,
+                         @RequestParam Date deadline,
+                         @RequestParam TaskStatus taskStatus) {
+        return service.newTask(user, header, description, deadline, taskStatus);
+    }
+
+//    @PostMapping("/save")
+//    public Long saveTask(@RequestBody User user) {
+//
+//    }
+
+    @DeleteMapping("/delete")
+    public String deleteTaskById(Long id) {
+        return service.deleteTaskById(id);
+    }
+
+    @PatchMapping("/update")
+    public String updateTaskById(Long id, User user) {
+        return service.updateTaskById(id, user);
+    }
 }
