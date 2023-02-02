@@ -45,7 +45,8 @@ public class TaskController {
     }
 
     @PatchMapping("/update")
-    public String updateTaskById(Long id, User user) {
+    public String updateTaskById(@RequestParam Long id,
+                                 @RequestParam User user) {
         return service.updateTaskById(id, user);
     }
 }

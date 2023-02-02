@@ -35,7 +35,8 @@ public class UserController {
     }
 
     @PatchMapping("/update")
-    public String updateUserById(Long id, String name) {
+    public String updateUserById(@RequestParam Long id,
+                                 @RequestParam String name) {
         return service.updateUserById(id, name);
     }
 }
