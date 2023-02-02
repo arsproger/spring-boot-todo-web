@@ -12,7 +12,7 @@ import java.util.Optional;
 public class UserController {
     UserService service;
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public Optional<User> getUserById(@PathVariable Long id) {
         return service.getById(id);
     }
@@ -29,7 +29,7 @@ public class UserController {
         return service.newUser(name, email, password);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{id}")
     public String deleteUserById(@PathVariable Long id) {
         return service.deleteUserById(id);
     }

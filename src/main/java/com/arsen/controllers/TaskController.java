@@ -15,7 +15,7 @@ import java.util.Optional;
 public class TaskController {
     TaskService service;
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public Optional<Task> getTaskById(@PathVariable Long id) {
         return service.getById(id);
     }
@@ -34,13 +34,13 @@ public class TaskController {
         return service.newTask(user, header, description, deadline, taskStatus);
     }
 
-//    @PostMapping("/save")
-//    public Long saveTask(@RequestBody User user) {
-//
-//    }
+    @PostMapping("/save")
+    public Long saveTask(@RequestBody Task task) {
+        return service.newTaskPro(task);
+    }
 
-    @DeleteMapping("/delete")
-    public String deleteTaskById(Long id) {
+    @DeleteMapping("/delete/{id}")
+    public String deleteTaskById(@PathVariable Long id) {
         return service.deleteTaskById(id);
     }
 

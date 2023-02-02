@@ -26,6 +26,11 @@ public class TaskService {
         return task.getId();
     }
 
+    public Long newTaskPro(Task task) {
+        taskRepository.save(task);
+        return task.getId();
+    }
+
     public Optional<Task> getById(Long id) {
         return taskRepository.findById(id);
     }
