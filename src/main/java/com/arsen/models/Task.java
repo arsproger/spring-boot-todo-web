@@ -2,20 +2,15 @@ package com.arsen.models;
 
 import com.arsen.enams.TaskStatus;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "Tasks")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@ToString
 public class Task {
     @Id
     @Column(name = "id")

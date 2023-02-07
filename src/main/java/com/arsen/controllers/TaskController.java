@@ -4,6 +4,7 @@ import com.arsen.enams.TaskStatus;
 import com.arsen.models.Task;
 import com.arsen.models.User;
 import com.arsen.services.TaskService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -14,6 +15,11 @@ import java.util.Optional;
 @RequestMapping("/task")
 public class TaskController {
     TaskService service;
+
+    @Autowired
+    public TaskController(TaskService service) {
+        this.service = service;
+    }
 
     @GetMapping("/get/{id}")
     public Optional<Task> getTaskById(@PathVariable Long id) {
@@ -34,10 +40,6 @@ public class TaskController {
         return service.newTask(user, header, description, deadline, taskStatus);
     }
 
-//    @PostMapping("/save")
-//    public Long saveTask(@RequestBody Task task) {
-//        return service.newTaskPro(task);
-//    }
 
     @DeleteMapping("/delete/{id}")
     public String deleteTaskById(@PathVariable Long id) {

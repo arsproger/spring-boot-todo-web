@@ -11,6 +11,7 @@ import java.util.Optional;
 @Service
 public class UserService {
     UserRepository userRepository;
+
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;

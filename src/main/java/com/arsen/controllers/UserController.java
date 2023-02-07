@@ -2,6 +2,7 @@ package com.arsen.controllers;
 
 import com.arsen.models.User;
 import com.arsen.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,12 +13,18 @@ import java.util.Optional;
 public class UserController {
     UserService service;
 
+    @Autowired
+    public UserController(UserService service) {
+        this.service = service;
+    }
+
+
     @GetMapping("/get/{id}")
     public Optional<User> getUserById(@PathVariable Long id) {
         return service.getById(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/get/all")
     public List<User> getAllUser() {
         return service.getAllUser();
     }
@@ -39,4 +46,5 @@ public class UserController {
                                  @RequestParam String name) {
         return service.updateUserById(id, name);
     }
+
 }
