@@ -1,5 +1,7 @@
 package com.arsen.enams;
 
 public enum TaskStatus {
-    NEW, IN_PROGRESS, COMPLETED
+    NEW,
+    IN_PROGRESS,
+    COMPLETED
 }

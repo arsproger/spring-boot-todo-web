@@ -1,54 +1,50 @@
 package com.arsen.controllers;
 
-import com.arsen.enams.TaskStatus;
 import com.arsen.models.Task;
-import com.arsen.models.User;
 import com.arsen.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-@RestController
+@Controller
 @RequestMapping("/task")
 public class TaskController {
-    TaskService service;
+    private final TaskService service;
 
     @Autowired
     public TaskController(TaskService service) {
         this.service = service;
     }
 
-    @GetMapping("/get/{id}")
-    public Optional<Task> getTaskById(@PathVariable Long id) {
-        return service.getById(id);
+    @GetMapping("new/{userId}")
+    public String newTask(@ModelAttribute("task") Task task, @PathVariable("userId") long id) {
+        return "task-new";
     }
 
-    @GetMapping("/all")
-    public List<Task> getAllTask() {
-        return service.getAllTask();
+    @PostMapping("/save/{owner}")
+    public String create(@ModelAttribute Task task, @PathVariable long owner) {
+        service.newTask(owner, task);
+        return "redirect:/user/" + owner;
     }
 
-    @PostMapping("/save")
-    public Long saveTask(@RequestParam User user,
-                         @RequestParam String header,
-                         @RequestParam String description,
-                         @RequestParam Date deadline,
-                         @RequestParam TaskStatus taskStatus) {
-        return service.newTask(user, header, description, deadline, taskStatus);
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        long userId = service.getById(id).getOwner().getId();
+        service.deleteTaskById(id);
+        return "redirect:/user/" + userId;
     }
 
-
-    @DeleteMapping("/delete/{id}")
-    public String deleteTaskById(@PathVariable Long id) {
-        return service.deleteTaskById(id);
+    @GetMapping("/{id}/edit")
+    public String edit(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("task", service.getById(id));
+        return "task-edit";
     }
 
-    @PatchMapping("/update")
-    public String updateTaskById(@RequestParam Long id,
-                                 @RequestParam User user) {
-        return service.updateTaskById(id, user);
+    @PatchMapping("/{id}")
+    public String update(@ModelAttribute("task") Task task, @PathVariable("id") Long id) {
+        service.updateTaskById(id, task);
+        return "redirect:/user/" + service.getById(id).getOwner().getId();
     }
+
 }

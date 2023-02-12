@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Thymeleaf Spring Boot Demo</title>
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+  <style>
+    .styled-table {
+      border-collapse: collapse;
+      margin: 25px 0;
+      font-size: 0.9em;
+      font-family: sans-serif;
+      min-width: 400px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+    .styled-table thead tr {
+      background-color: #009879;
+      color: #ffffff;
+      text-align: left;
+    }
+    .styled-table th,
+    .styled-table td {
+      padding: 12px 15px;
+    }
+    .styled-table tbody tr {
+      border-bottom: 1px solid #dddddd;
+    }
+
+    .styled-table tbody tr:nth-of-type(even) {
+      background-color: #f3f3f3;
+    }
+
+    .styled-table tbody tr:last-of-type {
+      border-bottom: 2px solid #009879;
+    }
+    .styled-table tbody tr.active-row {
+      font-weight: bold;
+      color: #009879;
+    }
+  </style>
+</head>
+<body>
+<h3>Name</h3>
+<p th:text="${user.getName()}">VALUE</p>
+<h3>Email</h3>
+<p th:text="${user.getEmail()}">VALUE</p>
+<h3>Tasks list</h3>
+  <table th:if="${not user.getTasks().isEmpty()}" class="styled-table">
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Header</th>
+    <th>Deadline</th>
+    <th>Task status</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="task : ${user.getTasks()}">
+    <td th:text="${task.id}"></td>
+    <td th:text="${task.header}"></td>
+    <td th:text="${task.deadline}"></td>
+    <td th:text="${task.taskStatus}"></td>
+    <td>
+      <a th:href="@{/task/{id}/edit(id=${task.getId()})}" class="btn btn-primary">Update</a>
+      <a th:href="@{/task/delete/{id}(id=${task.getId()})}" class="btn btn-danger">Delete</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+  <div th:if="${user.getTasks().isEmpty()}">
+    <br>
+    <h4 style="color: red; font-family: Arial">
+      <span th:text="${'У пользователя ' + user.getName()} + ' еще нет Task\'ов!'"></span>
+    </h4>
+    <br>
+  </div>
+<hr>
+<a th:href="@{/task/new/{id}(id=${user.getId()})}" class="btn btn-success">New task</a>
+<br>
+<hr>
+<a th:href="@{/user}" class="btn btn-secondary">Main page</a>
+<br>
+<hr>
+<form th:method="DELETE" th:action="@{/user/{id}(id=${user.getId()})}">
+  <input type="submit" value="Delete user"
+         class="btn btn-danger"
+         onclick="return confirm('Вы уверены, что хотите удалить этого пользователя?');"/>
+</form>
+<br><br>
+</body>
+</html>

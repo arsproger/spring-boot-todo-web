@@ -2,7 +2,8 @@ package com.arsen.models;
 
 import com.arsen.enams.TaskStatus;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -18,22 +19,22 @@ public class Task {
     @SequenceGenerator(name = "tasks_sequence", sequenceName = "tasks_sequence", allocationSize = 1)
     private Long id;
 
-    @Column(name = "header")
+    @Column(name = "header", nullable = false)
     private String header;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "deadline")
+    @Column(name = "deadline", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date deadline;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User owner;
 
-    @Column(name = "task_status")
+    @Column(name = "task_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
 

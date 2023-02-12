@@ -2,53 +2,50 @@ package com.arsen.services;
 
 import com.arsen.enams.TaskStatus;
 import com.arsen.models.Task;
-import com.arsen.models.User;
 import com.arsen.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TaskService {
-    TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
+    private final UserService userService;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, UserService userService) {
         this.taskRepository = taskRepository;
+        this.userService = userService;
     }
 
-    public Long newTask(User user, String header, String description, Date deadline, TaskStatus taskStatus) {
-        Task task = new Task(user, header, description, deadline, taskStatus);
+    public void newTask(long id, Task task) {
+        task.setOwner(userService.getById(id));
+        task.setTaskStatus(TaskStatus.NEW);
         taskRepository.save(task);
-        return task.getId();
     }
 
-    public Long newTaskPro(Task task) {
-        taskRepository.save(task);
-        return task.getId();
-    }
-
-    public Optional<Task> getById(Long id) {
-        return taskRepository.findById(id);
+    public Task getById(Long id) {
+        return taskRepository.findById(id).orElse(null);
     }
 
     public List<Task> getAllTask() {
         return taskRepository.findAll();
     }
 
-    public String deleteTaskById(Long id) {
+    public void deleteTaskById(Long id) {
         taskRepository.deleteById(id);
-        return "Task id: " + id + " is deleted!";
     }
 
-    public String updateTaskById(Long id, User user) {
+    public void updateTaskById(Long id, Task updatedTask) {
         Task task = taskRepository.findById(id).orElse(null);
-        if(task == null) return null;
-        task.setOwner(user);
-        return "Task id: " + id + " new username" + user.getName();
+        if(task == null) return;
+        task.setHeader(updatedTask.getHeader());
+        task.setDescription(updatedTask.getDescription());
+        task.setDeadline(updatedTask.getDeadline());
+        task.setTaskStatus(updatedTask.getTaskStatus());
+
+        taskRepository.save(task);
     }
 
 }

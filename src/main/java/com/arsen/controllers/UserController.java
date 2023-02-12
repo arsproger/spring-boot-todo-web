@@ -3,15 +3,14 @@ package com.arsen.controllers;
 import com.arsen.models.User;
 import com.arsen.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
-@RestController
-@RequestMapping("/user")
+@Controller
+@RequestMapping("user")
 public class UserController {
-    UserService service;
+    private final UserService service;
 
     @Autowired
     public UserController(UserService service) {
@@ -19,32 +18,34 @@ public class UserController {
     }
 
 
-    @GetMapping("/get/{id}")
-    public Optional<User> getUserById(@PathVariable Long id) {
-        return service.getById(id);
+    @GetMapping("/{id}")
+    public String getUserById(@PathVariable Long id, Model model) {
+        model.addAttribute("user", service.getById(id));
+        return "show";
     }
 
-    @GetMapping("/get/all")
-    public List<User> getAllUser() {
-        return service.getAllUser();
+    @GetMapping()
+    public String getAllUser(Model model) {
+        model.addAttribute("users", service.getAllUser());
+        return "index";
     }
 
-    @PostMapping("/save")
-    public Long saveUser(@RequestParam String name,
-                         @RequestParam String email,
-                         @RequestParam String password) {
-        return service.newUser(name, email, password);
+    @GetMapping("/new")
+    public String newPerson(@ModelAttribute("user") User user) {
+        return "user-new";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteUserById(@PathVariable Long id) {
-        return service.deleteUserById(id);
+    @PostMapping()
+    public String create(@ModelAttribute("user") User user) {
+        service.newUser(user);
+        return "redirect:/user";
     }
 
-    @PatchMapping("/update")
-    public String updateUserById(@RequestParam Long id,
-                                 @RequestParam String name) {
-        return service.updateUserById(id, name);
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable long id) {
+        service.deleteUserById(id);
+        return "redirect:/user";
     }
+
 
 }
