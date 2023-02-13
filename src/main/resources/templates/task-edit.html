@@ -21,7 +21,7 @@
             font-weight: bold;
             margin-right: 10px;
         }
-        input[type="text"], input[type="date"], select{
+        input[type="text"], input[type="datetime-local"], select{
             padding: 10px;
             font-size: 16px;
             margin-bottom: 20px;
@@ -55,7 +55,7 @@
     <input type="text" th:field="*{description}" id="description"/>
     <br/>
     <label for="deadline">Deadline: </label>
-    <input type="date" th:field="*{deadline}" id="deadline"/>
+    <input type="datetime-local" th:field="*{deadline}" id="deadline"/>
     <br/>
     <label for="taskStatus">Task status: </label>
     <select th:object="${task}" th:field="*{taskStatus}" id="task">

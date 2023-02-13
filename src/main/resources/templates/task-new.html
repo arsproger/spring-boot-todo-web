@@ -21,7 +21,7 @@
       font-weight: bold;
       margin-right: 10px;
     }
-    input[type="text"], input[type="date"]{
+    input[type="text"], input[type="datetime-local"]{
       padding: 10px;
       font-size: 16px;
       margin-bottom: 20px;
@@ -47,15 +47,18 @@
 </head>
 <body>
 <h1>New task form</h1>
-<form th:method="POST" th:action="@{/task/save/{owner}(owner=${userId})}" th:object="${task}">
+<form th:method="POST" th:action="@{/task/save/{userId}(userId=${userId})}" th:object="${task}">
+  <div style="color : red" th:if="${#fields.hasErrors('header')}" th:errors="*{header}">Error</div>
   <label for="header">Header: </label>
   <input type="text" th:field="*{header}" id="header"/>
   <br/>
+  <div style="color : red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Error</div>
   <label for="description">Description: </label>
   <input type="text" th:field="*{description}" id="description"/>
   <br/>
+  <div style="color : red" th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}">Error</div>
   <label for="deadline">Deadline: </label>
-  <input type="date" th:field="*{deadline}" id="deadline"/>
+  <input type="datetime-local" th:field="*{deadline}" id="deadline"/>
   <br/>
   <input type="submit" value="Create!"/>
 </form>

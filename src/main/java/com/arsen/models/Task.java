@@ -2,11 +2,14 @@ package com.arsen.models;
 
 import com.arsen.enams.TaskStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Tasks")
@@ -19,16 +22,20 @@ public class Task {
     @SequenceGenerator(name = "tasks_sequence", sequenceName = "tasks_sequence", allocationSize = 1)
     private Long id;
 
-    @Column(name = "header", nullable = false)
+    @NotEmpty(message = "Header не может быть пустым!")
+    @Size(max = 20, message = "Превышено максимальное значение для поля header!")
+    @Column(name = "header")
     private String header;
 
+    @Size(max = 50, message = "Превышено максимальное значение для поля description!")
     @Column(name = "description")
     private String description;
 
-    @Column(name = "deadline", nullable = false)
+    @NotNull(message = "Deadline не может быть пустым!")
+    @Column(name = "deadline")
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date deadline;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime deadline;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -38,7 +45,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
 
-    public Task(User owner, String header, String description, Date deadline, TaskStatus taskStatus) {
+    public Task(User owner, String header, String description, LocalDateTime deadline, TaskStatus taskStatus) {
         this.owner = owner;
         this.header = header;
         this.description = description;

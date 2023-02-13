@@ -2,19 +2,24 @@ package com.arsen.controllers;
 
 import com.arsen.models.User;
 import com.arsen.services.UserService;
+import com.arsen.util.UserValidator;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("user")
 public class UserController {
     private final UserService service;
+    private final UserValidator validator;
 
     @Autowired
-    public UserController(UserService service) {
+    public UserController(UserService service, UserValidator validator) {
         this.service = service;
+        this.validator = validator;
     }
 
 
@@ -36,7 +41,12 @@ public class UserController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("user") User user) {
+    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        validator.validate(user, bindingResult);
+
+        if(bindingResult.hasErrors())
+            return "user-new";
+
         service.newUser(user);
         return "redirect:/user";
     }

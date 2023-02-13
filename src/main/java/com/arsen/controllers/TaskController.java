@@ -2,9 +2,11 @@ package com.arsen.controllers;
 
 import com.arsen.models.Task;
 import com.arsen.services.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -22,10 +24,14 @@ public class TaskController {
         return "task-new";
     }
 
-    @PostMapping("/save/{owner}")
-    public String create(@ModelAttribute Task task, @PathVariable long owner) {
-        service.newTask(owner, task);
-        return "redirect:/user/" + owner;
+    @PostMapping("/save/{userId}")
+    public String create(@ModelAttribute("task") @Valid Task task,
+                         BindingResult bindingResult, @PathVariable("userId") long id) {
+        if(bindingResult.hasErrors())
+            return "task-new";
+
+        service.newTask(id, task);
+        return "redirect:/user/" + id;
     }
 
     @GetMapping("/delete/{id}")
