@@ -66,7 +66,7 @@
     <td>
       <a th:href="@{/task/{id}/edit(id=${task.getId()})}" class="btn btn-primary">Update</a>
       <a th:href="@{/task/delete/{id}(id=${task.getId()})}" class="btn btn-danger"
-         onclick="return confirm('Вы уверены, что хотите удалить этот task?');">Delete</a>
+         onclick="return confirm('Вы уверены, что хотите удалить этот task?')">Delete</a>
     </td>
   </tr>
   </tbody>
@@ -88,7 +88,7 @@
 <form th:method="DELETE" th:action="@{/user/{id}(id=${user.getId()})}">
   <input type="submit" value="Delete user"
          class="btn btn-danger"
-         onclick="return confirm('Вы уверены, что хотите удалить этого пользователя?');"/>
+         onclick="return confirm('Вы уверены, что хотите удалить этого пользователя?')"/>
 </form>
 <br><br>
 </body>
