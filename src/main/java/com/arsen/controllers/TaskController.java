@@ -27,7 +27,7 @@ public class TaskController {
     @PostMapping("/save/{userId}")
     public String create(@ModelAttribute("task") @Valid Task task,
                          BindingResult bindingResult, @PathVariable("userId") long id) {
-        if(bindingResult.hasErrors())
+        if (bindingResult.hasErrors())
             return "task-new";
 
         service.newTask(id, task);
@@ -50,7 +50,7 @@ public class TaskController {
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("task") @Valid Task task,
                          BindingResult bindingResult, @PathVariable("id") Long id) {
-        if(bindingResult.hasErrors())
+        if (bindingResult.hasErrors())
             return "task-edit";
 
         service.updateTaskById(id, task);

@@ -39,7 +39,7 @@ public class TaskService {
 
     public void updateTaskById(Long id, Task updatedTask) {
         Task task = taskRepository.findById(id).orElse(null);
-        if(task == null) return;
+        if (task == null) return;
         task.setHeader(updatedTask.getHeader());
         task.setDescription(updatedTask.getDescription());
         task.setDeadline(updatedTask.getDeadline());

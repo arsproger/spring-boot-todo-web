@@ -25,7 +25,7 @@ public class UserValidator implements Validator {
     public void validate(Object target, Errors errors) {
         User user = (User) target;
 
-        if(userService.getByEmail(user.getEmail()).isPresent())
+        if (userService.getByEmail(user.getEmail()).isPresent())
             errors.rejectValue("email", "", "Email уже зарегистрирован!");
     }
 }

@@ -65,7 +65,8 @@
     <td th:text="${task.taskStatus}"></td>
     <td>
       <a th:href="@{/task/{id}/edit(id=${task.getId()})}" class="btn btn-primary">Update</a>
-      <a th:href="@{/task/delete/{id}(id=${task.getId()})}" class="btn btn-danger">Delete</a>
+      <a th:href="@{/task/delete/{id}(id=${task.getId()})}" class="btn btn-danger"
+         onclick="return confirm('Вы уверены, что хотите удалить этот task?');">Delete</a>
     </td>
   </tr>
   </tbody>

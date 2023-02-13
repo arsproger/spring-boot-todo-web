@@ -44,7 +44,7 @@ public class UserController {
     public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         validator.validate(user, bindingResult);
 
-        if(bindingResult.hasErrors())
+        if (bindingResult.hasErrors())
             return "user-new";
 
         service.newUser(user);
@@ -56,6 +56,5 @@ public class UserController {
         service.deleteUserById(id);
         return "redirect:/user";
     }
-
 
 }
