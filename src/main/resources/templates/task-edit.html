@@ -48,15 +48,18 @@
 <body>
 <h1>Edit task form</h1>
 <form th:method="PATCH" th:action="@{/task/{id}(id=${task.getId()})}" th:object="${task}">
+    <div style="color : red" th:if="${#fields.hasErrors('header')}" th:errors="*{header}">Error</div>
     <label for="header">Header: </label>
     <input type="text" th:field="*{header}" id="header"/>
     <br/>
     <label for="description">Description: </label>
     <input type="text" th:field="*{description}" id="description"/>
     <br/>
+    <div style="color : red" th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}">Error</div>
     <label for="deadline">Deadline: </label>
     <input type="datetime-local" th:field="*{deadline}" id="deadline"/>
     <br/>
+    <input type="hidden" th:field="*{owner}" value="${task.getOwner()}">
     <label for="taskStatus">Task status: </label>
     <select th:object="${task}" th:field="*{taskStatus}" id="task">
         <option value="NEW" label="NEW"></option>

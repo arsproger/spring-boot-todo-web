@@ -48,7 +48,11 @@ public class TaskController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("task") Task task, @PathVariable("id") Long id) {
+    public String update(@ModelAttribute("task") @Valid Task task,
+                         BindingResult bindingResult, @PathVariable("id") Long id) {
+        if(bindingResult.hasErrors())
+            return "task-edit";
+
         service.updateTaskById(id, task);
         return "redirect:/user/" + service.getById(id).getOwner().getId();
     }
